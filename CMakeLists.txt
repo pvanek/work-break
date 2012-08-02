@@ -14,9 +14,9 @@ endif ()
 set(MAJOR_VERSION 1)
 set(MINOR_VERSION 0)
 set(PATCH_VERSION 0)
-set(RAZOR_VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION})
+set(APP_VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION})
 add_definitions(-DAPP_NAME=\"${PROJECT_NAME}\"
-                -DAPP_VERSION=\"${RAZOR_VERSION}\")
+                -DAPP_VERSION=\"${APP_VERSION}\")
 
 add_definitions ( -Wall )
 
@@ -37,6 +37,9 @@ set(SRC
    src/main.cpp
    src/workbreak.cpp
 )
+if (APPLE)
+	SET (SRC ${SRC} macosx/${PROJECT_NAME}.icns)
+endif (APPLE)
 
 set(MOCS
    src/workbreak.h
@@ -55,7 +58,7 @@ endif (QT_QTDBUS_FOUND)
 qt4_wrap_cpp(MOCS_SRC ${MOCS})
 
 
-add_executable(${PROJECT_NAME}
+add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
     ${SRC} ${MOCS_SRC})
 
 target_link_libraries(${PROJECT_NAME} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
@@ -66,13 +69,31 @@ endif (QT_QTDBUS_FOUND)
 
 # platform specific
 if (APPLE)
-    message(FATAL_ERROR "Building for apple is not implemented yet")
+    # mac's bundle install
+    SET_TARGET_PROPERTIES(${CMAKE_PROJECT_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/macosx/Info.plist.in")
+  	SET(MACOSX_BUNDLE_ICON_FILE ${PROJECT_NAME}.icns)
+   	SET(MACOSX_BUNDLE_INFO_STRING "${PROJECT_NAME} ${QSHARE_VERSION}")
+   	SET(MACOSX_BUNDLE_GUI_IDENTIFIER "cz.yarpen.${PROJECT_NAME}")
+   	SET(MACOSX_BUNDLE_LONG_VERSION_STRING "${APP_VERSION}")
+   	SET(MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}")
+   	SET(MACOSX_BUNDLE_SHORT_VERSION_STRING "${APP_VERSION}")
+   	SET(MACOSX_BUNDLE_BUNDLE_VERSION "${APP_VERSION}")
+   	SET(MACOSX_BUNDLE_COPYRIGHT "(c) Petr Vanek; petr@yarpen.cz")
+   	SET_SOURCE_FILES_PROPERTIES(${CMAKE_SOURCE_DIR}/macosx/${PROJECT_NAME}.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+
+    INSTALL(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION ${CMAKE_INSTALL_PREFIX})
+    INSTALL(FILES ${ICONS} DESTINATION ${PROJECT_NAME}.app/Contents/Resources/icons)
+    set(ICON_PREFIX "/../Resources/icons/")
+
+    # create a "transportable" bundle - all libs into the bundle: "make bundle" after make install
+    configure_file(macosx/bundle.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/bundle.cmake @ONLY)
+    add_custom_target(bundle ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/bundle.cmake)
 elseif (WIN32)
     message(FATAL_ERROR "Building for windows is not implemented yet")
 elseif (UNIX)
-    set(ICON_PREFIX ${CMAKE_INSTALL_PREFIX}/share/work-break/icons/)
+    set(ICON_PREFIX ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/icons/)
     install(TARGETS ${PROJECT_NAME} DESTINATION bin)
-    install(FILES ${ICONS} DESTINATION share/work-break/icons/)
+    install(FILES ${ICONS} DESTINATION share/${PROJECT_NAME}/icons/)
 else ()
     message(FATAL_ERROR "Unknown platform to build")
 endif ()

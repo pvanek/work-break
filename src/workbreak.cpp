@@ -14,16 +14,22 @@
 WorkBreak::WorkBreak(QObject *parent)
     : QSystemTrayIcon(parent)
 {
-    m_iconPaths[Green] = QString(ICON_PREFIX) + "green.png";
-    m_iconPaths[Yellow] = QString(ICON_PREFIX) + "yellow.png";
-    m_iconPaths[Red] = QString(ICON_PREFIX) + "red.png";
+
+    QString appPath;
+    if (!QFile::exists(ICON_PREFIX))
+    {
+        appPath = QCoreApplication::applicationDirPath() + "/";
+    }
+    m_iconPaths[Green] = appPath + ICON_PREFIX + "green.png";
+    m_iconPaths[Yellow] = appPath + ICON_PREFIX + "yellow.png";
+    m_iconPaths[Red] = appPath + ICON_PREFIX + "red.png";
 
     m_icons[Green] = QIcon(m_iconPaths[Green]);
     m_icons[Yellow] = QIcon(m_iconPaths[Yellow]);
     m_icons[Red] = QIcon(m_iconPaths[Red]);
 
     QTime initial(0, 0);
-    int intervals = 24;
+    int intervals = 14;
     for (int i = 0; i < intervals; ++i)
         m_schedule << initial.addSecs(i * (24*60*60/intervals));
     qSort(m_schedule.begin(), m_schedule.end());
