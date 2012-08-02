@@ -11,6 +11,8 @@ int main(int argc, char *argv[])
     a.setOrganizationDomain("yarpen.cz");
     a.setOrganizationName("Petr Vanek");
 
+    a.setQuitOnLastWindowClosed(false);
+
     WorkBreak w;
     w.show();
     return a.exec();

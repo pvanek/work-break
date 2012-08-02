@@ -29,6 +29,7 @@ public slots:
                  const QString &body);
 
 private:
+    QString m_appPrefix;
     QTimer *m_timer;
     Status m_status;
 
@@ -46,6 +47,7 @@ private:
 
 private slots:
     void timerTimeout();
+    void about();
 
 #ifdef HAVE_QTDBUS
     void notificationClosed(uint, uint);

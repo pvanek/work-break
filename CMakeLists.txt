@@ -34,23 +34,28 @@ include_directories (
 
 
 set(SRC
-   src/main.cpp
-   src/workbreak.cpp
+    src/main.cpp
+    src/workbreak.cpp
 )
 if (APPLE)
 	SET (SRC ${SRC} macosx/${PROJECT_NAME}.icns)
 endif (APPLE)
 
 set(MOCS
-   src/workbreak.h
+    src/workbreak.h
 )
 
 set(ICONS
-   src/icons/green.png
-   src/icons/red.png
-   src/icons/yellow.png
+    src/icons/green.png
+    src/icons/red.png
+    src/icons/yellow.png
 )
 
+set(DOCS
+    docs/index_en.html.in
+)
+
+    
 if (QT_QTDBUS_FOUND)
     qt4_add_dbus_interface(SRC src/dbus/org.freedesktop.Notifications.xml notifications_interface)
 endif (QT_QTDBUS_FOUND)
@@ -65,6 +70,15 @@ target_link_libraries(${PROJECT_NAME} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 if (QT_QTDBUS_FOUND)
     target_link_libraries(${PROJECT_NAME} ${QT_QTDBUS_LIBRARY})
 endif (QT_QTDBUS_FOUND)
+
+
+# generate documantation form *.in sources
+foreach (i ${DOCS})
+    get_filename_component(htmlfile ${i} NAME_WE)
+    message(STATUS "  generating docs for: ${i} -> ${htmlfile}.html")
+    configure_file(${i} ${CMAKE_CURRENT_BINARY_DIR}/${htmlfile}.html)
+    set (DOCS_HTML ${DOCS_HTML} ${CMAKE_CURRENT_BINARY_DIR}/${htmlfile}.html)
+endforeach()
 
 
 # platform specific
@@ -83,7 +97,8 @@ if (APPLE)
 
     INSTALL(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION ${CMAKE_INSTALL_PREFIX})
     INSTALL(FILES ${ICONS} DESTINATION ${PROJECT_NAME}.app/Contents/Resources/icons)
-    set(ICON_PREFIX "/../Resources/icons/")
+    INSTALL(FILES ${DOCS_HTML} DESTINATION ${PROJECT_NAME}.app/Contents/Resources)
+    set(FILE_PREFIX "/../Resources/")
 
     # create a "transportable" bundle - all libs into the bundle: "make bundle" after make install
     configure_file(macosx/bundle.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/bundle.cmake @ONLY)
@@ -91,15 +106,16 @@ if (APPLE)
 elseif (WIN32)
     message(FATAL_ERROR "Building for windows is not implemented yet")
 elseif (UNIX)
-    set(ICON_PREFIX ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/icons/)
+    set(FILE_PREFIX ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/icons/)
     install(TARGETS ${PROJECT_NAME} DESTINATION bin)
     install(FILES ${ICONS} DESTINATION share/${PROJECT_NAME}/icons/)
+    install(FILES ${DOCS_HTML} DESTINATION share/${PROJECT_NAME}/)
 else ()
     message(FATAL_ERROR "Unknown platform to build")
 endif ()
 
-message(STATUS "Icon prefix: ${ICON_PREFIX}")
-add_definitions(-DICON_PREFIX=\"${ICON_PREFIX}\")
+message(STATUS "File prefix: ${FILE_PREFIX}")
+add_definitions(-DFILE_PREFIX=\"${FILE_PREFIX}\")
 
 
 ########## Add make dist target ################
