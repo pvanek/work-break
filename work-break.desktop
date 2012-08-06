@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Work Break tool
+Comment=Work break notifier systray tool
+Exec=work-break
+Terminal=false
+Type=Application
+Icon=work-break
+Categories=Qt;Utility;
+GenericName=Work break notifier
+
