@@ -1,0 +1,28 @@
+****** Work Break Documentation ******
+License:  Lesser GPL v2 or later
+Author:   Petr Vanek petr@yarpen.cz
+Homepage: https://github.com/pvanek/work-break
+
+***** Application Scope *****
+I had serious issues - body collapses - when I worked on some IT projects near
+deadlines. You know it probably. Hours and hours of bug hunting, code
+reviewing, reporting etc. under stress.
+After some medical examinations I was told some mystical phrases about veins
+and veins pressure and more. Doc said everything should be better taking
+regular short breaks in the working time.
+So here is a tool which Works For Me (tm). take it or let it be...
+
+***** Technical Scope *****
+WorkBreak is a multi-platform application running on almost everywhere where is
+the Qt library avalable. Tested on Linux, Mac OS X.
+
+**** Requirements ****
+    * Qt 4.6 or later (QtCore, QtGui, and QtDBUS optionally)
+    * CMake for building from sources
+
+***** The Background Theory *****
+See various articles on the Internet. Keywords are: Neck or Shoulders pain,
+Computer Vision Syndrome, Microtrauma, Musculoskeletal Problems, Carpal Tunnel
+Syndrome,  etc.
+Read for example this Wikipedia article: Computer-induced_medical_problems
+

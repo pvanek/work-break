@@ -1,3 +1,8 @@
+/*
+  Licensed under LPGL v2 or later.
+  Author: Petr Vanek <petr@yarpen.cz>
+ */
+
 #ifndef WORKBREAK_H
 #define WORKBREAK_H
 

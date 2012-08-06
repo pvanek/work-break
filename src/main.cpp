@@ -1,3 +1,8 @@
+/*
+  Licensed under LPGL v2 or later.
+  Author: Petr Vanek <petr@yarpen.cz>
+ */
+
 #include <QtGui/QApplication>
 #include "workbreak.h"
 
