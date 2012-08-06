@@ -6,7 +6,7 @@
 #include "workbreak.h"
 #include <QtDebug>
 #include <QtGui/QMessageBox>
-#include <Qtgui/QMenu>
+#include <QtGui/QMenu>
 #include <QtGui/QApplication>
 #include <QtCore/QTimer>
 #include <QtCore/QTime>
