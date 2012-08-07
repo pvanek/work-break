@@ -21,7 +21,7 @@ class WorkBreak : public QSystemTrayIcon
 
 public:
 
-    enum Status {Green, Yellow, Red};
+    enum Status {Init, Green, Yellow, Red};
 
     WorkBreak(QObject *parent = 0);
     ~WorkBreak();

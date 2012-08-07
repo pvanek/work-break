@@ -26,10 +26,12 @@ WorkBreak::WorkBreak(QObject *parent)
         m_appPrefix = QCoreApplication::applicationDirPath() + "/";
     }
 
+    m_iconPaths[Init] = m_appPrefix + FILE_PREFIX + "icons/green.png";
     m_iconPaths[Green] = m_appPrefix + FILE_PREFIX + "icons/green.png";
     m_iconPaths[Yellow] = m_appPrefix + FILE_PREFIX + "icons/yellow.png";
     m_iconPaths[Red] = m_appPrefix + FILE_PREFIX + "icons/red.png";
 
+    m_icons[Init] = QIcon(m_iconPaths[Green]);
     m_icons[Green] = QIcon(m_iconPaths[Green]);
     m_icons[Yellow] = QIcon(m_iconPaths[Yellow]);
     m_icons[Red] = QIcon(m_iconPaths[Red]);
@@ -43,7 +45,7 @@ WorkBreak::WorkBreak(QObject *parent)
     qSort(m_schedule.begin(), m_schedule.end());
     qDebug() << "Schedule:" << m_schedule;
 
-    setStatus(Green);
+    setStatus(Init);
     setToolTip(tr("Application just started. Calculating schedule..."));
 
 #ifdef HAVE_QTDBUS
