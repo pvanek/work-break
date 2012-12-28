@@ -42,6 +42,8 @@ WorkBreak::WorkBreak(QObject *parent)
     int intervals = 14;
     for (int i = 0; i < intervals; ++i)
         m_schedule << initial.addSecs(i * (24*60*60/intervals));
+    // midnight failback showstopper
+    m_schedule << QTime(23, 59, 59);
     qSort(m_schedule.begin(), m_schedule.end());
     qDebug() << "Schedule:" << m_schedule;
 
@@ -104,7 +106,7 @@ void WorkBreak::timerTimeout()
 
     if (nextSchedule.isNull())
     {
-        qDebug() << "No next schedule found";
+        qDebug() << "No next schedule found.";
         m_scheduleDone.clear();
     }
     else
