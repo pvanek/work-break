@@ -3,7 +3,7 @@
   Author: Petr Vanek <petr@yarpen.cz>
  */
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include "workbreak.h"
 
 

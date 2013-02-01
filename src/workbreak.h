@@ -6,7 +6,7 @@
 #ifndef WORKBREAK_H
 #define WORKBREAK_H
 
-#include <QtGui/QSystemTrayIcon>
+#include <QtWidgets/QSystemTrayIcon>
 #include <QtCore/QHash>
 #ifdef HAVE_QTDBUS
 #include "notifications_interface.h"

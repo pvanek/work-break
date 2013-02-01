@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 2.6 )
+cmake_minimum_required( VERSION 2.8.8 )
 
 project(work-break)
 
@@ -12,16 +12,20 @@ if (NOT CMAKE_INSTALL_PREFIX)
 endif ()
 
 set(MAJOR_VERSION 1)
-set(MINOR_VERSION 0)
-set(PATCH_VERSION 1)
+set(MINOR_VERSION 1)
+set(PATCH_VERSION 0)
 set(APP_VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION})
 add_definitions(-DAPP_NAME=\"${PROJECT_NAME}\"
                 -DAPP_VERSION=\"${APP_VERSION}\")
 
 add_definitions ( -Wall )
 
-find_package ( Qt4 4.6.0 REQUIRED)
-include ( ${QT_USE_FILE} )
+find_package(Qt5Core 4.5.0 REQUIRED)
+find_package(Qt5Widgets 4.5.0 REQUIRED)
+#find_package(Qt5DBus 4.5.0)
+
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS})
+set(CMAKE_CXX_FLAGS "-fPIC")
 
 if (QT_QTDBUS_FOUND)
     add_definitions(-DHAVE_QTDBUS)
@@ -57,18 +61,20 @@ set(DOCS
 
     
 if (QT_QTDBUS_FOUND)
-    qt4_add_dbus_interface(SRC src/dbus/org.freedesktop.Notifications.xml notifications_interface)
+    qt5_add_dbus_interface(SRC src/dbus/org.freedesktop.Notifications.xml notifications_interface)
 endif (QT_QTDBUS_FOUND)
 
-qt4_wrap_cpp(MOCS_SRC ${MOCS})
+qt5_wrap_cpp(MOCS_SRC ${MOCS})
 
 
 add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
-    ${SRC} ${MOCS_SRC})
+              ${SRC} ${MOCS_SRC})
+qt5_use_modules(${PROJECT_NAME} Core Widgets)
 
 target_link_libraries(${PROJECT_NAME} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 if (QT_QTDBUS_FOUND)
     target_link_libraries(${PROJECT_NAME} ${QT_QTDBUS_LIBRARY})
+    qt5_use_modules(${PROJECT_NAME} DBus)
 endif (QT_QTDBUS_FOUND)
 
 

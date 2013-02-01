@@ -5,11 +5,12 @@
 
 #include "workbreak.h"
 #include <QtDebug>
-#include <QtGui/QMessageBox>
-#include <QtGui/QMenu>
-#include <QtGui/QApplication>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QApplication>
 #include <QtCore/QTimer>
 #include <QtCore/QTime>
+#include <QtCore/QFile>
 
 #ifdef HAVE_QTDBUS
 #include <QtDBus/QDBusInterface>
